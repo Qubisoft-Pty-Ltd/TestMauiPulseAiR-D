@@ -1,0 +1,41 @@
+﻿@page "/image-classification"
+@using TestMauiApp.Services
+@inject ImageClassificationService imageClassificationService
+
+<h1>Image Classification</h1>
+
+@if (!classificationResult)
+{
+   @*  <input type="file" accept="image/*" capture onchange="@UploadImage" /> *@
+    <button onclick="@UploadImage">Classify Images</button>
+}
+else
+{
+    <p>Classification Results of images:</p>
+    @foreach (var label in classificationLabels)
+    {
+        <p>@label</p>
+    }
+}
+
+@code {
+    private bool classificationResult = false;
+    private List<string> classificationLabels;
+
+    private async Task UploadImage()
+    {
+        classificationLabels = await imageClassificationService.ClassifyImage();
+        if (classificationLabels.Count() > 0)
+            classificationResult = true;
+
+
+       // var imageFiles = e.Value as IBrowserFile[];
+       // if (imageFiles.Length > 0)
+       // {
+        //    var imageFile = imageFiles[0];
+            // Convert image to a format that can be processed (e.g., byte array, stream)
+            // Call backend service to classify image
+            //classificationResult = await ImageClassificationService.ClassifyImage(imageFile);
+       // }
+    }
+}
